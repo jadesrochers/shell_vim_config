@@ -12,6 +12,10 @@ set autoindent
 " Breaks vi compatibility but solves all related issue
 set nocompatible
 
+" Make no swap files. This disables backups, so if you crash without saving, problems.
+" My vc and save habits meant it was frequently annoying, rarely helpful.  
+set noswapfile
+
 " Options for plugins 
 
 " YouCompleteMe (YCM) 
@@ -91,6 +95,10 @@ inoremap <C-c> <nop>
 " insert lines in normal mode easily
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
+
+" Get regex without escapes, case insensitive searches
+nnoremap / /\v\c
+vnoremap / /\v\c
 
 " Easier copy to and paste from system clipboard.
 nnoremap <leader>p "+p
