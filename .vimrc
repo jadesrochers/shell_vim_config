@@ -16,7 +16,15 @@ set nocompatible
 " My vc and save habits meant it was frequently annoying, rarely helpful.  
 set noswapfile
 
+" Basic syntax highlighting. Needed to run polyglot, works if it does not.
+syntax on
+
+
 " Options for plugins 
+
+" Vim polyglot (syntax highlighting) turn off some languages I never use
+" mostly to remind me that this is the syntax plugin I use.  
+let g:polyglot_disabled = ['go', 'rust', 'c++']
 
 " YouCompleteMe (YCM) 
 let g:ycm_min_num_of_chars_for_completion = 2
@@ -30,7 +38,7 @@ let g:ycm_max_num_identifier_candidates = 10
 " delay after typing completes to get linting.
 let g:ale_completion_delay = 200
 let g:ale_completion_max_suggestions = 40
-let g:ale_completion_enabled = 0
+let g:ale_completion_enabled = 1
 
 " Do a filetype set to fix an issue with ansible files
 autocmd BufRead,BufNewFile *.yml set filetype=ansible.yaml
@@ -77,8 +85,6 @@ set number
 set hidden
 " Make backspace work in a sane way even if you won't use it.
 set backspace=indent,eol,start
-" Basic syntax highlighting. Might need to turn off at some point.
-syntax on
 " Have vim read changes when they are made to a file
 set autoread
 
@@ -136,6 +142,7 @@ nnoremap <leader>nt :NERDTreeToggle<cr>
 " Get FZF fuzzy finding more easily. Second one starts it in home dir.
 nnoremap <leader>ff :FZF<cr>
 nnoremap <leader>fh :FZF ~<cr>
+nnoremap <leader>fp :FZF Rg<cr>
 " FZF uses Find as the base, so you can pass find options if
 " you want it to act a certain way.
 
