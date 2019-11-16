@@ -141,7 +141,7 @@ nnoremap <leader>nt :NERDTreeToggle<cr>
 
 " stop fzf Rg from searching file names.  
 " Figure out what this does for vimscript exprience
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+command! -bang -nargs=* Rc call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 " Fuzzy search all file names
 nnoremap <leader>fa :Files<cr>
@@ -149,8 +149,10 @@ nnoremap <leader>fa :Files<cr>
 nnoremap <leader>fg :GFiles<cr>
 " Fuzzy search buffer names
 nnoremap <leader>fb :Buffers <cr>
-" Fzf uses Ripgrep search in file contents; live/updating content display
-nnoremap <leader>fc :Rg <cr>
+" Fzf and Ripgrep to search only in file contents
+nnoremap <leader>fc :Rc <cr>
+" Fzf and Ripgrep to grep search both name and contents
+nnoremap <leader>fn :Rg <cr>
 " Find in lines of buffers currently open
 nnoremap <leader>fl :Lines <cr>
 
