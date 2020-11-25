@@ -135,3 +135,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
+source <(kubectl completion bash)

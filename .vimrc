@@ -1,5 +1,9 @@
-
+set spell spelllang=en_us
+" configure decent default of tab/shift and expandtab
+" such that any file opened does not use tabs
+set tabstop=2 shiftwidth=2 expandtab smarttab
 " Configure indent, space, tab stuff with autocmd for specific file types
+set autoindent 
 autocmd FileType python setlocal tabstop=2 shiftwidth=2 textwidth=120 smarttab expandtab
 autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 smarttab expandtab
 autocmd FileType css setlocal tabstop=2 shiftwidth=2 smarttab expandtab
@@ -7,10 +11,14 @@ autocmd FileType sh setlocal tabstop=2 shiftwidth=2 smarttab expandtab
 autocmd FileType r setlocal tabstop=2 shiftwidth=2 smarttab expandtab
 autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 cindent smartindent expandtab
 
-set autoindent 
+" get commentary working better on random file types
+autocmd FileType conf setlocal commentstring=#\ %s
 
 " Breaks vi compatibility but solves all related issue
 set nocompatible
+
+" turn off the noises
+set belloff=all
 
 " Make no swap files. This disables backups, so if you crash without saving, problems.
 " My vc and save habits meant it was frequently annoying, rarely helpful.  
@@ -95,7 +103,7 @@ let mapleader = "\<Space>" " retain the default, space bar.
 " apparently Ctrl-C can cause lots of problems.
 inoremap jk <Esc> 
 " Force use of jk by unmapping the other options
-inoremap <C-c> <nop>
+" inoremap <C-c> <nop>
 " C is control, <nop> means no operation.
 
 " insert lines in normal mode easily
