@@ -102,6 +102,7 @@ let mapleader = "\<Space>" " retain the default, space bar.
 " A remap of escape so that exiting edit can be done without Ctrl-C
 " apparently Ctrl-C can cause lots of problems.
 inoremap jk <Esc> 
+inoremap jj <Esc> 
 " Force use of jk by unmapping the other options
 " inoremap <C-c> <nop>
 " C is control, <nop> means no operation.
