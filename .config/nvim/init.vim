@@ -50,6 +50,7 @@
   autocmd FileType javascriptreact setlocal expandtab smartindent ts=4 sw=4 sts=4 
   autocmd FileType html setlocal expandtab smartindent ts=2 sw=2 sts=2 
   autocmd FileType css setlocal expandtab smartindent ts=4 sw=4 sts=4
+  autocmd FileType json setlocal expandtab smartindent ts=4 sw=4 sts=4
 
   " set the leader for custom commands.
   let mapleader = "\<Space>" " retain the default, space bar.
