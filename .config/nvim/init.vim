@@ -23,6 +23,12 @@
   " Enable deoplete by default
   let g:deoplete#enable_at_startup = 1
 
+  " Make completions actually work with coc.nvim?
+  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+  " And to make it automatically do the first if not selected (not sure if
+  " compatible with above)
+  inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
   " Syntax highlight stuff
   " Important!!
   if has('termguicolors')
