@@ -125,14 +125,16 @@ if ! shopt -oq posix; then
 fi
 
 # append to the PATH to add functions you have created.
+# None of the shell script matter, just a reminder right now.
 PATH=$PATH:/home/jad/dev/shellscripts
-PATH=/opt/packer:$PATH
+
+eval $(ssh-agent -s) &> /dev/null
+(ssh-add ~/.ssh/rational_*_gpu ~/.ssh/github-*-a ~/.ssh/github_access_b ~/.ssh/gcloud-prod1-gpu) &> /dev/null
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
-source <(kubectl completion bash)
+

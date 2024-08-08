@@ -51,9 +51,11 @@
   " Try and work out why my file spacing/indenting is not working in any way
   " and in fact seems completely wrong
   :filetype on
-  autocmd FileType python setlocal expandtab smartindent ts=4 sw=4 textwidth=120 fileformat=unix
+  autocmd FileType python setlocal expandtab smartindent ts=4 sw=4 textwidth=0 fileformat=unix
   autocmd FileType javascript setlocal expandtab smartindent ts=4 sw=4 sts=4 
   autocmd FileType javascriptreact setlocal expandtab smartindent ts=4 sw=4 sts=4 
+  autocmd FileType typescript setlocal expandtab smartindent ts=4 sw=4 sts=4 
+  autocmd FileType typescriptreact setlocal expandtab smartindent ts=4 sw=4 sts=4 
   autocmd FileType html setlocal expandtab smartindent ts=2 sw=2 sts=2 
   autocmd FileType css setlocal expandtab smartindent ts=4 sw=4 sts=4
   autocmd FileType json setlocal expandtab smartindent ts=4 sw=4 sts=4
