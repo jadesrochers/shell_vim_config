@@ -1,6 +1,8 @@
- " Indicate which plugins to install
+  " Indicate which plugins to install
   call plug#begin('~/.local/share/nvim/plugged')
+
   Plug 'tpope/vim-commentary'
+
   " This is the old command to set up fzf, but it worked well on linux
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
   " This is the new one, might have been a fluke but did not work
@@ -9,25 +11,62 @@
   Plug 'junegunn/fzf.vim'
   Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
   Plug 'Vimjas/vim-python-pep8-indent'
+
+  " Install language support for coc 
+  " with: :CocInstall coc-pyright coc-json coc-tsserver coc-html coc-css
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'zchee/deoplete-jedi'
+
   " For markdown syntax highlight
   Plug 'tpope/vim-markdown'
+
   " Color scheme
   Plug 'sainnhe/sonokai'
+
   call plug#end()
   " :PlugInstall       to install all
   " :PlugUpdate        Update them
   " :PlugStatus        Check status, shows if they installed right
 
-  " Enable deoplete by default
-  let g:deoplete#enable_at_startup = 1
+  " Allow enter completion
+  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-  " Make completions actually work with coc.nvim?
-  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
-  " And to make it automatically do the first if not selected (not sure if
-  " compatible with above)
-  inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+  " Use Tab to trigger completion, or cycle completions?
+  inoremap <silent><expr> <TAB>
+			  \ coc#pum#visible() ? coc#pum#next(1) :
+			  \ CheckBackspace() ? "\<Tab>" :
+			  \ coc#refresh()
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+  function! CheckBackspace() abort
+	  let col = col('.') - 1
+	  return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " GoTo code navigation with COC
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+
+  " Show function, object definition in little window
+  " SUPER USEFUL!
+  nnoremap <silent> K :call ShowDocumentation()<CR>
+
+  function! ShowDocumentation()
+	  if CocAction('hasProvider', 'hover')
+		  call CocActionAsync('doHover')
+	  else
+		  call feedkeys('K', 'in')
+	  endif
+  endfunction
+
+  " Symbol renaming with COC
+  nmap <leader>rn <Plug>(coc-rename)
+
+  " Highlight the symbol and its references when holding the cursor
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
 
   " Syntax highlight stuff
   " Important!!
