@@ -9,26 +9,25 @@
   " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   " For help - :help fzf
   Plug 'junegunn/fzf.vim'
-  " Plug 'dense-analysis/ale'
-  " let g:ale_linters = {'python': ['pyright']}
-  " let g:ale_fixers = {'python': ['black', 'isort']}
 
   " LSP + Mason
+  " Mason is a language server package manager, 
+  " LSP is the Language Server Protocol to standardize 
+  " language server communication
+  " Open mason interface with :Mason
+  " Install with :MasonInstall serverName
+  " Check servers with :LspInfo
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/mason.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
 
-  " Optional: Completion
+  " Completion
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
 
   Plug 'Vimjas/vim-python-pep8-indent'
-
-  " Install language support for coc 
-  " with: :CocInstall coc-pyright coc-json coc-tsserver coc-html coc-css
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " For markdown syntax highlight
   Plug 'tpope/vim-markdown'
@@ -43,46 +42,6 @@
 
   " set the leader for custom commands.
   let mapleader = "\<Space>" " retain the default, space bar.
-
-  " Allow enter completion
-  " inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-
-  " Use Tab to trigger completion, or cycle completions?
-  " inoremap <silent><expr> <TAB>
-			  " \ coc#pum#visible() ? coc#pum#next(1) :
-			  " \ CheckBackspace() ? "\<Tab>" :
-			  " \ coc#refresh()
-  " inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-  " function! CheckBackspace() abort
-	  " let col = col('.') - 1
-	  " return !col || getline('.')[col - 1]  =~# '\s'
-  " endfunction
-
-  " GoTo code navigation with COC
-  " nmap <silent> gd <Plug>(coc-definition)
-  " nmap <silent> gy <Plug>(coc-type-definition)
-  " nmap <silent> gi <Plug>(coc-implementation)
-  " nmap <silent> gr <Plug>(coc-references)
-
-  " Symbol renaming with COC
-  " nmap <leader>rn <Plug>(coc-rename)
-
-  " Show function, object definition in little window
-  " SUPER USEFUL!
-  " nnoremap <silent> K :call ShowDocumentation()<CR>
-
-  " function! ShowDocumentation()
-	  " if CocAction('hasProvider', 'hover')
-		  " call CocActionAsync('doHover')
-	  " else
-		  " call feedkeys('K', 'in')
-	  " endif
-  " endfunction
-
-  " Highlight the symbol and its references when holding the cursor
-  " autocmd CursorHold * silent call CocActionAsync('highlight')
-
 
   " Syntax highlight stuff
   " Important!!
@@ -103,8 +62,6 @@
   " Have vim read changes when they are made to a file
   set autoread
 
-  " Try and work out why my file spacing/indenting is not working in any way
-  " and in fact seems completely wrong
   :filetype on
   autocmd FileType python setlocal expandtab smartindent ts=4 sw=4 textwidth=0 fileformat=unix
   autocmd FileType javascript setlocal expandtab smartindent ts=4 sw=4 sts=4 
@@ -141,6 +98,7 @@
   nnoremap <leader>fh :History: <cr>
   " Find in Search History
   nnoremap <leader>fs :History/ <cr>
+
 
 " Now load Lua configuration AFTER plugins are defined
 lua << EOF
