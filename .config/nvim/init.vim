@@ -9,7 +9,21 @@
   " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   " For help - :help fzf
   Plug 'junegunn/fzf.vim'
-  Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+  " Plug 'dense-analysis/ale'
+  " let g:ale_linters = {'python': ['pyright']}
+  " let g:ale_fixers = {'python': ['black', 'isort']}
+
+  " LSP + Mason
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/mason.nvim'
+  Plug 'williamboman/mason-lspconfig.nvim'
+
+  " Optional: Completion
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+
   Plug 'Vimjas/vim-python-pep8-indent'
 
   " Install language support for coc 
@@ -27,45 +41,47 @@
   " :PlugUpdate        Update them
   " :PlugStatus        Check status, shows if they installed right
 
+  " set the leader for custom commands.
+  let mapleader = "\<Space>" " retain the default, space bar.
+
   " Allow enter completion
-  inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+  " inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
   " Use Tab to trigger completion, or cycle completions?
-  inoremap <silent><expr> <TAB>
-			  \ coc#pum#visible() ? coc#pum#next(1) :
-			  \ CheckBackspace() ? "\<Tab>" :
-			  \ coc#refresh()
-  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+  " inoremap <silent><expr> <TAB>
+			  " \ coc#pum#visible() ? coc#pum#next(1) :
+			  " \ CheckBackspace() ? "\<Tab>" :
+			  " \ coc#refresh()
+  " inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-  function! CheckBackspace() abort
-	  let col = col('.') - 1
-	  return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
+  " function! CheckBackspace() abort
+	  " let col = col('.') - 1
+	  " return !col || getline('.')[col - 1]  =~# '\s'
+  " endfunction
 
   " GoTo code navigation with COC
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
+  " nmap <silent> gd <Plug>(coc-definition)
+  " nmap <silent> gy <Plug>(coc-type-definition)
+  " nmap <silent> gi <Plug>(coc-implementation)
+  " nmap <silent> gr <Plug>(coc-references)
 
+  " Symbol renaming with COC
+  " nmap <leader>rn <Plug>(coc-rename)
 
   " Show function, object definition in little window
   " SUPER USEFUL!
-  nnoremap <silent> K :call ShowDocumentation()<CR>
+  " nnoremap <silent> K :call ShowDocumentation()<CR>
 
-  function! ShowDocumentation()
-	  if CocAction('hasProvider', 'hover')
-		  call CocActionAsync('doHover')
-	  else
-		  call feedkeys('K', 'in')
-	  endif
-  endfunction
-
-  " Symbol renaming with COC
-  nmap <leader>rn <Plug>(coc-rename)
+  " function! ShowDocumentation()
+	  " if CocAction('hasProvider', 'hover')
+		  " call CocActionAsync('doHover')
+	  " else
+		  " call feedkeys('K', 'in')
+	  " endif
+  " endfunction
 
   " Highlight the symbol and its references when holding the cursor
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+  " autocmd CursorHold * silent call CocActionAsync('highlight')
 
 
   " Syntax highlight stuff
@@ -99,8 +115,6 @@
   autocmd FileType css setlocal expandtab smartindent ts=4 sw=4 sts=4
   autocmd FileType json setlocal expandtab smartindent ts=4 sw=4 sts=4
 
-  " set the leader for custom commands.
-  let mapleader = "\<Space>" " retain the default, space bar.
 
   " A remap of escape so that exiting edit can be done without Ctrl-C
   " apparently Ctrl-C can cause lots of problems.
@@ -128,4 +142,150 @@
   " Find in Search History
   nnoremap <leader>fs :History/ <cr>
 
+" Now load Lua configuration AFTER plugins are defined
+lua << EOF
+-- Mason setup
+require("mason").setup()
+
+require("mason-lspconfig").setup({
+  ensure_installed = { "pyright", "ts_ls", "html", "cssls", "jsonls" },
+  automatic_installation = true,
+})
+
+-- Setup LSP servers
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+-- Python
+vim.lsp.config.pyright = {
+  cmd = { "pyright-langserver", "--stdio" },
+  filetypes = { "python" },
+  root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
+  default_config = {
+    capabilities = capabilities,
+    settings = {
+      python = {
+        analysis = {
+          autoSearchPaths = true,
+          useLibraryCodeForTypes = true,
+          diagnosticMode = "workspace",
+        },
+      },
+    },
+  },
+}
+
+-- TypeScript/JavaScript
+vim.lsp.config.ts_ls = {
+  cmd = { "typescript-language-server", "--stdio" },
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+  default_config = {
+    capabilities = capabilities,
+  },
+}
+
+-- HTML
+vim.lsp.config.html = {
+  cmd = { "vscode-html-language-server", "--stdio" },
+  filetypes = { "html" },
+  root_markers = { ".git" },
+  default_config = {
+    capabilities = capabilities,
+  },
+}
+
+-- CSS
+vim.lsp.config.cssls = {
+  cmd = { "vscode-css-language-server", "--stdio" },
+  filetypes = { "css", "scss", "less" },
+  root_markers = { ".git" },
+  default_config = {
+    capabilities = capabilities,
+  },
+}
+
+-- JSON
+vim.lsp.config.jsonls = {
+  cmd = { "vscode-json-language-server", "--stdio" },
+  filetypes = { "json", "jsonc" },
+  root_markers = { ".git" },
+  default_config = {
+    capabilities = capabilities,
+  },
+}
+
+-- Enable the LSP servers on the appropriate filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "css", "scss", "less", "json", "jsonc" },
+  callback = function()
+    vim.lsp.enable(vim.bo.filetype)
+  end,
+})
+
+
+-- Completion setup (nvim-cmp)
+local cmp = require('cmp')
+
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
+  })
+})
+
+-- LSP Keybindings
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local opts = { buffer = args.buf, noremap = true, silent = true }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+  end,
+})
+
+-- Show diagnostics on cursor hold
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focusable = false })
+  end
+})
+
+-- Diagnostic configuration
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+EOF
 
