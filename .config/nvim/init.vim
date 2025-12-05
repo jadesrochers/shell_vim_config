@@ -1,3 +1,4 @@
+
   " Indicate which plugins to install
   call plug#begin('~/.local/share/nvim/plugged')
 
@@ -9,6 +10,12 @@
   " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   " For help - :help fzf
   Plug 'junegunn/fzf.vim'
+
+  " Get Copilot setup 
+  Plug 'github/copilot.vim'
+  Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'do': 'make tiktoken' }
+  " help :CopilotChat
+  Plug 'nvim-lua/plenary.nvim'  " Dependency for chat
 
   " LSP + Mason
   " Mason is a language server package manager, 
@@ -52,6 +59,10 @@
   " let g:sonokai_style = 'Maia' 
   " then activate it
   colorscheme sonokai
+
+  " Copilot settings
+  imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+  " let g:copilot_no_tab_map = v:false  " Enable Tab override
 
   " line numbers
   set number
@@ -244,6 +255,11 @@ vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
   severity_sort = true,
+})
+
+-- CopilotChat Setup
+require("CopilotChat").setup({
+  window = { layout = 'float', width = 0.3 },  -- Compact chat window
 })
 EOF
 
