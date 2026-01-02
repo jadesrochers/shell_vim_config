@@ -15,6 +15,7 @@
   Plug 'github/copilot.vim'
   Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'do': 'make tiktoken' }
   " help :CopilotChat
+  " help copilot  - also gets you the help docs 
   Plug 'nvim-lua/plenary.nvim'  " Dependency for chat
 
   " LSP + Mason
